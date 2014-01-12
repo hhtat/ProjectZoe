@@ -2,6 +2,7 @@
 #define ROW     r5
 #define COL     r6
 #define INDEX   r7
+#define EXTMEM  r8
 
 #define CALLREG r29.w0
 
@@ -11,8 +12,9 @@
 #define H_XCK       r30.t10
 #define VH_FR       r30.t11
 
-#define C_SHAREDRAM   C28
-#define R_PRU1_CTPPR0 0x24028 
+#define C_PRUCFG      C4
+
+#define R_PRU1_DRAM1  0x0
 
 #define NUM_ROWS    160
 #define NUM_COLS    70
@@ -31,9 +33,13 @@
 
 _start:
 
-  MOV r0, 0x100
-  MOV r1, R_PRU1_CTPPR0
-  SBBO r0, r1, 0, 4
+  LBCO r0, C_PRUCFG, 4, 4
+  CLR r0, r0, 4
+  SBCO r0, C_PRUCFG, 4, 4
+
+
+  MOV r0, R_PRU1_DRAM1
+  LBBO EXTMEM, r0, 0, 4
 
 
   MOV FR, 0
@@ -58,7 +64,7 @@ _start:
       MOV COL, 0
       _next_col:
 
-        LBCO r0.b0, C_SHAREDRAM, INDEX, 1
+        LBBO r0.b0, EXTMEM, INDEX, 1
         
         
         AND r0.b1, r0.b0, 0x0f
@@ -118,3 +124,4 @@ _start:
   JMP _next_frame
 
 JMP _start
+

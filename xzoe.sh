@@ -5,15 +5,11 @@ if [ "$( id -u )" != "0" ] ; then
   exit 1
 fi
 
-Xvfb -screen 0 560x160x8 &
-sleep 2
+killall xzoe
+
 export DISPLAY=:0
 
 cd bin
-./xzoe &
+./xzoe
 cd ..
-
-evilwm -fn fixed &
-
-x11vnc &
 

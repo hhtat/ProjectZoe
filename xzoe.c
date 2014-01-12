@@ -4,6 +4,7 @@
 #include <unistd.h>
 
 #include <X11/Xlib.h>
+#include <X11/Xutil.h>
 #include <X11/extensions/Xdamage.h>
 
 #include "pru1_lcd.h"
@@ -82,6 +83,8 @@ int main( void )
         }
       }
 
+      XDestroyImage( image );
+
       if( pru1_lcd_send( buffer ) )
       {
         fprintf( stderr, "pru1_lcd_send failed\n" );
@@ -89,7 +92,7 @@ int main( void )
       }
     }
 
-    usleep( 10000 );
+    usleep( 20000 );
   }
   while(1);
 

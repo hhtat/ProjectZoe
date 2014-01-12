@@ -9,9 +9,6 @@
 
 #include "pru1_lcd.h"
 
-static const int xzoe_width = 560;
-static const int xzoe_height = 160;
-
 int main( void )
 {
   Display* display;
@@ -63,23 +60,23 @@ int main( void )
     if( damaged )
     {
       XImage* image;
-      uint8_t buffer[ pru1_lcd_buffer_len ];
+      uint8_t buffer[ PRU1_LCD_BUF_LEN ];
       int i, j, k;
 
-      image = XGetImage( display, root_window, 0, 0, xzoe_width, xzoe_height, AllPlanes, ZPixmap );
+      image = XGetImage( display, root_window, 0, 0, PRU1_LCD_NUM_COLS, PRU1_LCD_NUM_ROWS, AllPlanes, ZPixmap );
 
-      for( j = 0, k = 0; j < xzoe_height; j++ )
+      for( j = 0, k = 0; j < PRU1_LCD_NUM_ROWS; j++ )
       {
-        for( i = 0; i < xzoe_width; i += 8, k++ )
+        for( i = 0; i < PRU1_LCD_NUM_COLS; i += 8, k++ )
         {
-          buffer[ k ] = ((image->data[ xzoe_width * j + i + 0 ] != 1) << 0) |
-                        ((image->data[ xzoe_width * j + i + 1 ] != 1) << 1) |
-                        ((image->data[ xzoe_width * j + i + 2 ] != 1) << 2) |
-                        ((image->data[ xzoe_width * j + i + 3 ] != 1) << 3) |
-                        ((image->data[ xzoe_width * j + i + 4 ] != 1) << 4) |
-                        ((image->data[ xzoe_width * j + i + 5 ] != 1) << 5) |
-                        ((image->data[ xzoe_width * j + i + 6 ] != 1) << 6) |
-                        ((image->data[ xzoe_width * j + i + 7 ] != 1) << 7);
+          buffer[ k ] = ((image->data[ PRU1_LCD_NUM_COLS * j + i + 0 ] != 1) << 0) |
+                        ((image->data[ PRU1_LCD_NUM_COLS * j + i + 1 ] != 1) << 1) |
+                        ((image->data[ PRU1_LCD_NUM_COLS * j + i + 2 ] != 1) << 2) |
+                        ((image->data[ PRU1_LCD_NUM_COLS * j + i + 3 ] != 1) << 3) |
+                        ((image->data[ PRU1_LCD_NUM_COLS * j + i + 4 ] != 1) << 4) |
+                        ((image->data[ PRU1_LCD_NUM_COLS * j + i + 5 ] != 1) << 5) |
+                        ((image->data[ PRU1_LCD_NUM_COLS * j + i + 6 ] != 1) << 6) |
+                        ((image->data[ PRU1_LCD_NUM_COLS * j + i + 7 ] != 1) << 7);
         }
       }
 

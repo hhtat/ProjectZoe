@@ -20,8 +20,8 @@ static int xzoe_xdamage_error_base;
 
 static int pixel_to_slice_map[ PRU1_LCD_NUM_SLICES ][ XZOE_NUM_COLORS ];
 
-int xzoe_init_pixel_to_slice_map( void );
 int xzoe_init_xdamage( void );
+int xzoe_update_pixel_to_slice_map( void );
 int xzoe_update_pru1_lcd( void );
 
 int main( void )
@@ -47,11 +47,6 @@ int main( void )
   }
 
   xzoe_root_window = XDefaultRootWindow( xzoe_display );
-
-  if( xzoe_init_pixel_to_slice_map( ) )
-  {
-    return -1;
-  }
 
   if( xzoe_init_xdamage( ) )
   {
@@ -438,6 +433,11 @@ int xzoe_update_pru1_lcd( void )
   XImage* image;
   uint8_t buffer[ PRU1_LCD_BUF_LEN ];
   int i, j, k, l;
+
+  if( xzoe_init_pixel_to_slice_map( ) )
+  {
+    return -1;
+  }
 
   image = XGetImage( xzoe_display, xzoe_root_window, 0, 0, PRU1_LCD_NUM_COLS, PRU1_LCD_NUM_ROWS, AllPlanes, ZPixmap );
 

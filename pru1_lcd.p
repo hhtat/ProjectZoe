@@ -124,7 +124,7 @@ _start:
 
             QBNE _FRn0_logic, FR, 0
               CLR VH_FR
-            JMP _FRn0_logic_end
+            QBA _FRn0_logic_end
             _FRn0_logic:
               SET VH_FR
             _FRn0_logic_end:
@@ -143,7 +143,7 @@ _start:
     ADD SLICE, SLICE, 1
     QBNE _next_slice, SLICE, NUM_SLICES
   
-  JMP _next_frame
+  QBA _next_frame
 
 
 

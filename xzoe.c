@@ -84,7 +84,7 @@ int main( void )
   return 0;
 }
 
-int xzoe_init_pixel_to_slice_map( void )
+int xzoe_update_pixel_to_slice_map( void )
 {
   Colormap colormap;
   XColor colors[ XZOE_NUM_COLORS ];
@@ -432,30 +432,33 @@ int xzoe_update_pru1_lcd( void )
 {
   XImage* image;
   uint8_t buffer[ PRU1_LCD_BUF_LEN ];
-  int i, j, k, l;
+  int i, j;
 
-  if( xzoe_init_pixel_to_slice_map( ) )
+
+  if( xzoe_update_pixel_to_slice_map( ) )
   {
     return -1;
   }
 
   image = XGetImage( xzoe_display, xzoe_root_window, 0, 0, PRU1_LCD_NUM_COLS, PRU1_LCD_NUM_ROWS, AllPlanes, ZPixmap );
-
-  for( k = 0, l = 0; k < PRU1_LCD_NUM_SLICES; k++ )
+  if( image == NULL )
   {
-    for( j = 0; j < PRU1_LCD_NUM_ROWS; j++ )
+    fprintf( stderr, "XGetImage failed!\n" );
+    return -1;
+  }
+
+  for( i = 0; i < PRU1_LCD_NUM_COLS * PRU1_LCD_NUM_ROWS; i += 8 )
+  {
+    for( j = 0; j < PRU1_LCD_NUM_SLICES; j++ )
     {
-      for( i = 0; i < PRU1_LCD_NUM_COLS; i += 8, l++ )
-      {
-        buffer[ l ] = ( pixel_to_slice_map[ k ][ ( size_t ) image->data[ PRU1_LCD_NUM_COLS * j + i + 0 ] ] << 0 ) |
-                      ( pixel_to_slice_map[ k ][ ( size_t ) image->data[ PRU1_LCD_NUM_COLS * j + i + 1 ] ] << 1 ) |
-                      ( pixel_to_slice_map[ k ][ ( size_t ) image->data[ PRU1_LCD_NUM_COLS * j + i + 2 ] ] << 2 ) |
-                      ( pixel_to_slice_map[ k ][ ( size_t ) image->data[ PRU1_LCD_NUM_COLS * j + i + 3 ] ] << 3 ) |
-                      ( pixel_to_slice_map[ k ][ ( size_t ) image->data[ PRU1_LCD_NUM_COLS * j + i + 4 ] ] << 4 ) |
-                      ( pixel_to_slice_map[ k ][ ( size_t ) image->data[ PRU1_LCD_NUM_COLS * j + i + 5 ] ] << 5 ) |
-                      ( pixel_to_slice_map[ k ][ ( size_t ) image->data[ PRU1_LCD_NUM_COLS * j + i + 6 ] ] << 6 ) |
-                      ( pixel_to_slice_map[ k ][ ( size_t ) image->data[ PRU1_LCD_NUM_COLS * j + i + 7 ] ] << 7 );
-      }
+      buffer[ PRU1_LCD_BUF_SLICE_LEN * j + i / 8 ] = ( pixel_to_slice_map[ j ][ ( size_t ) image->data[ i + 0 ] ] << 0 ) |
+                                                     ( pixel_to_slice_map[ j ][ ( size_t ) image->data[ i + 1 ] ] << 1 ) |
+                                                     ( pixel_to_slice_map[ j ][ ( size_t ) image->data[ i + 2 ] ] << 2 ) |
+                                                     ( pixel_to_slice_map[ j ][ ( size_t ) image->data[ i + 3 ] ] << 3 ) |
+                                                     ( pixel_to_slice_map[ j ][ ( size_t ) image->data[ i + 4 ] ] << 4 ) |
+                                                     ( pixel_to_slice_map[ j ][ ( size_t ) image->data[ i + 5 ] ] << 5 ) |
+                                                     ( pixel_to_slice_map[ j ][ ( size_t ) image->data[ i + 6 ] ] << 6 ) |
+                                                     ( pixel_to_slice_map[ j ][ ( size_t ) image->data[ i + 7 ] ] << 7 );
     }
   }
 

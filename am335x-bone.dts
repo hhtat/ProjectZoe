@@ -87,16 +87,21 @@
 			phandle = <0x7>;
 		};
 
-    pru1_pins: pinmux_pru1_pins {
+    pruss_pins: pinmux_pruss_pins {
       pinctrl-single,pins = <
-        0xa0 0xd /* LCD_DATA0, IDIS | OFF | MODE5 */
-        0xa4 0xd /* LCD_DATA1, IDIS | OFF | MODE5 */
-        0xa8 0xd /* LCD_DATA2, IDIS | OFF | MODE5 */
-        0xac 0xd /* LCD_DATA3, IDIS | OFF | MODE5 */
-        0xe0 0xd /* LCD_VSYNC, IDIS | OFF | MODE5 */
-        0xe4 0xd /* LCD_HSYNC, IDIS | OFF | MODE5 */
-        0xe8 0xd /* LCD_PCLK, IDIS | OFF | MODE5 */
-        0xec 0xd /* LCD_AC_BIAS_EN, IDIS | OFF | MODE5 */
+        0x0a0 0x0d /* LCD_DATA0,        IDIS | OFF | MODE5 */
+        0x0a4 0x0d /* LCD_DATA1,        IDIS | OFF | MODE5 */
+        0x0a8 0x0d /* LCD_DATA2,        IDIS | OFF | MODE5 */
+        0x0ac 0x0d /* LCD_DATA3,        IDIS | OFF | MODE5 */
+        0x0e0 0x0d /* LCD_VSYNC,        IDIS | OFF | MODE5 */
+        0x0e4 0x0d /* LCD_HSYNC,        IDIS | OFF | MODE5 */
+        0x0e8 0x0d /* LCD_PCLK,         IDIS | OFF | MODE5 */
+        0x0ec 0x0d /* LCD_AC_BIAS_EN,   IDIS | OFF | MODE5 */
+        0x190 0x0d /* MCASP0_ACLKX,     IDIS | OFF | MODE5 */
+        0x194 0x0d /* MCASP0_FSX,       IDIS | OFF | MODE5 */
+        0x198 0x2e /* MCASP0_AXR0,      IEN  | OFF | MODE6 */
+        0x19c 0x0d /* MCASP0_AHCLKR,    IDIS | OFF | MODE5 */
+        0x1a4 0x0d /* MCASP0_FSR,       IDIS | OFF | MODE5 */
       >;
       linux,phandle = <0x4d>;
       phandle = <0x4d>;
@@ -573,7 +578,7 @@
 			linux,phandle = <0x33>;
 			phandle = <0x33>;
       pinctrl-names = "default";
-      pinctrl-0 = <&pru1_pins>;
+      pinctrl-0 = <&pruss_pins>;
 		};
 
 		rtc@44e3e000 {

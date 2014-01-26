@@ -17,5 +17,3 @@ cd ..
 
 evilwm -fn fixed &
 
-x11vnc &
-

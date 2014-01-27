@@ -270,6 +270,9 @@ xio_scan_row:
   spi_end r1
 
 
+  delay r1, 200
+
+
   spi_begin r1
   spi_transfer r0.b0, r1, r2, IOX_OP_BASE | IOX_COL_ADDR | IOX_OP_READ
   spi_transfer r0.b0, r1, r2, IOX_REG_GPIOA

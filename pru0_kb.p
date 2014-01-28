@@ -138,28 +138,24 @@ _start:
   delay r0, 10
 
 
-//  test_loop:
-
-//    spi_begin r1
-//    spi_transfer r0, r1, r2, IOX_OP_BASE | IOX_OP_READ
-//    spi_transfer r0, r1, r2, IOX_REG_IODIRA
-//    spi_transfer r0, r1, r2, 0
-//    spi_end r1
-
-
-//    MOV r1, R_PRU0_DRAM0
-//    SBBO r0, r1, 0, 1
-
-
-//    MOV INTCOUT, EVTOUT0_INTCOUT
-
-//  JMP test_loop
-
-
   spi_begin r1
   spi_transfer r0, r1, r2, IOX_OP_BASE | IOX_OP_WRITE
   spi_transfer r0, r1, r2, IOX_REG_IOCON
   spi_transfer r0, r1, r2, IOX_BIT_IOCON_HAEN
+  spi_end r1
+
+
+  spi_begin r1
+  spi_transfer r0, r1, r2, IOX_OP_BASE | IOX_ROW_ADDR | IOX_OP_WRITE
+  spi_transfer r0, r1, r2, IOX_REG_GPPUA
+  spi_transfer r0, r1, r2, 0xFF
+  spi_end r1
+
+
+  spi_begin r1
+  spi_transfer r0, r1, r2, IOX_OP_BASE | IOX_ROW_ADDR | IOX_OP_WRITE
+  spi_transfer r0, r1, r2, IOX_REG_GPPUB
+  spi_transfer r0, r1, r2, 0xFF
   spi_end r1
 
 
@@ -271,6 +267,23 @@ xio_scan_row:
 
 
   delay r1, 200
+
+
+  spi_begin r1
+  spi_transfer r0.b0, r1, r2, IOX_OP_BASE | IOX_ROW_ADDR | IOX_OP_READ
+  spi_transfer r0.b0, r1, r2, IOX_REG_GPIOA
+  spi_transfer r0.b0, r1, r2,0
+  spi_end r1
+
+
+  spi_begin r1
+  spi_transfer r0.b1, r1, r2, IOX_OP_BASE | IOX_ROW_ADDR | IOX_OP_READ
+  spi_transfer r0.b1, r1, r2, IOX_REG_GPIOB
+  spi_transfer r0.b1, r1, r2, 0
+  spi_end r1
+
+
+  QBNE _main_loop, r0.w0, r3.w0
 
 
   spi_begin r1

@@ -41,7 +41,7 @@ void* xzoe_kb_thread_start( void* arg )
     {
       if( kb_map[ i ].down )
       {
-        if( !buffer.data[ kb_map[ i ].row ][ kb_map[ i ].col ] )
+        if( buffer.data[ kb_map[ i ].row ][ kb_map[ i ].col ] == PRU_KB_UP )
         {
           kb_map[ i ].down = false;
 
@@ -58,7 +58,7 @@ void* xzoe_kb_thread_start( void* arg )
       }
       else
       {
-        if( buffer.data[ kb_map[ i ].row ][ kb_map[ i ].col ] )
+        if( buffer.data[ kb_map[ i ].row ][ kb_map[ i ].col ] == PRU_KB_DOWN )
         {
           kb_map[ i ].down = true;
 

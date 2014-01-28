@@ -8,7 +8,7 @@
 #include "xzoe.h"
 #include "pru.h"
 
-static int xzoe_init_slice_map( int slice_map[ PRU_LCD_NUM_SLICES ][ XZOE_NUM_COLORS ] );
+static int xzoe_init_lcd_slice_map( int slice_map[ PRU_LCD_NUM_SLICES ][ XZOE_NUM_COLORS ] );
 
 int xzoe_update_pru_lcd( void )
 {
@@ -17,9 +17,9 @@ int xzoe_update_pru_lcd( void )
   pru_lcd_buffer buffer;
   int i, j;
 
-  if( xzoe_init_slice_map( slice_map ) )
+  if( xzoe_init_lcd_slice_map( slice_map ) )
   {
-    fprintf( stderr, "xzoe_init_slice_map failed\n" );
+    fprintf( stderr, "xzoe_init_lcd_slice_map failed\n" );
     return -1;
   }
 
@@ -56,7 +56,7 @@ int xzoe_update_pru_lcd( void )
   return 0;
 }
 
-int xzoe_init_slice_map( int slice_map[ PRU_LCD_NUM_SLICES ][ XZOE_NUM_COLORS ] )
+int xzoe_init_lcd_slice_map( int slice_map[ PRU_LCD_NUM_SLICES ][ XZOE_NUM_COLORS ] )
 {
   Colormap colormap;
   XColor colors[ XZOE_NUM_COLORS ];

@@ -10,6 +10,7 @@
 #include "pru.h"
 
 static int xzoe_init_kb_map( xzoe_kb_map_entry kb_map[ XZOE_NUM_KEYS ] );
+static bool xzoe_validate_kb_buffer( const pru_kb_buffer* buffer, xzoe_kb_map_entry kb_map[ XZOE_NUM_KEYS ] );
 
 void* xzoe_kb_thread_start( void* arg )
 {
@@ -35,6 +36,11 @@ void* xzoe_kb_thread_start( void* arg )
     {
       fprintf( stderr, "pru_kb_get failed\n" );
       return NULL;
+    }
+
+    if( !xzoe_validate_kb_buffer( &buffer, kb_map ) )
+    {
+      continue;
     }
 
     for( i = 0; i < XZOE_NUM_KEYS; i++ )
@@ -563,5 +569,52 @@ static int xzoe_init_kb_map( xzoe_kb_map_entry kb_map[ XZOE_NUM_KEYS ] )
   kb_map[ 79 ].value = "Right";
 
   return 0;
+}
+
+static bool xzoe_validate_kb_buffer( const pru_kb_buffer* buffer, xzoe_kb_map_entry kb_map[ XZOE_NUM_KEYS ] )
+{
+  bool down_map[ PRU_KB_NUM_ROWS ][ PRU_KB_NUM_COLS ];
+  int i, j, k, l;
+
+  for( j = 0; j < PRU_KB_NUM_ROWS; j++ )
+  {
+    for( i = 0; i < PRU_KB_NUM_COLS; i++ )
+    {
+      down_map[ j ][ i ] = false;
+    }
+  }
+
+  for( i = 0; i < XZOE_NUM_KEYS; i++ )
+  {
+    if( buffer->data[ kb_map[ i ].row ][ kb_map[ i ].col ] == PRU_KB_DOWN )
+    {
+      down_map[ kb_map[ i ].row ][ kb_map[ i ].col ] = true;
+    }
+  }
+
+  for( j = 0; j < PRU_KB_NUM_ROWS; j++ )
+  {
+    for( i = 0; i < PRU_KB_NUM_COLS; i++ )
+    {
+      if( down_map[ j ][ i ] )
+      {
+        for( l = j - 1; l >= 0; l-- )
+        {
+          if( down_map[ l ][ i ] )
+          {
+            for( k = i - 1; k >= 0; k-- )
+            {
+              if( down_map[ j ][ k ] && down_map[ l ][ k ] )
+              {
+                return false;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  return true;
 }
 

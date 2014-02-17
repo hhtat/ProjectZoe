@@ -58,7 +58,7 @@
 .mparam reg1
 
   CLR SS
-  delay reg1, 10
+  delay reg1, 20
 
 .endm
 
@@ -75,7 +75,7 @@
     SET MOSI
 
   mosi_end:
-  delay reg2, 10
+  delay reg2, 20
 
 
   SET SCLK
@@ -91,7 +91,7 @@
     SET reg1, op
 
   miso_end:
-  delay reg2, 10
+  delay reg2, 20
 
 
   CLR SCLK
@@ -101,9 +101,9 @@
 .macro spi_end
 .mparam reg1
 
-  delay reg1, 10
+  delay reg1, 20
   SET SS
-  delay reg1, 10
+  delay reg1, 20
 
 .endm
 
@@ -133,9 +133,9 @@ _start:
 
 
   CLR RST
-  delay r0, 10
+  delay r0, 20
   SET RST
-  delay r0, 10
+  delay r0, 20
 
 
   spi_begin r1
@@ -252,6 +252,7 @@ xio_scan_row:
   spi_end r1
 
 
+  delay r1, 200
   delay r1, 200
 
 

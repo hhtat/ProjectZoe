@@ -49,7 +49,9 @@
 
   SET H_XCK
   MOV reg1, reg1
+  MOV reg1, reg1
   CLR H_XCK
+  MOV reg1, reg1
   MOV reg1, reg1
 
 .endm
@@ -132,6 +134,7 @@ _start:
           _skip_ROW0_logic_2:
 
 
+          delay r0, 200
           delay r0, 200
 
         ADD ROW, ROW, 1
